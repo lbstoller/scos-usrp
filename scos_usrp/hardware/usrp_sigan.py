@@ -18,6 +18,7 @@ from scos_actions import utils
 from scos_actions.calibration import sensor_calibration, sigan_calibration
 from scos_actions.hardware.sigan_iface import SignalAnalyzerInterface
 
+from scos_usrp import __version__ as SCOS_USRP_VERSION
 from scos_usrp import settings
 from scos_usrp.hardware.mocks.usrp_block import MockUsrp
 
@@ -59,6 +60,7 @@ class USRPSignalAnalyzer(SignalAnalyzerInterface):
         self._sensor_overload = False
         self._capture_time = None
         self.requested_sample_rate = 0
+        self._plugin_version = SCOS_USRP_VERSION
         self.connect()
 
     def connect(self):
@@ -108,6 +110,11 @@ class USRPSignalAnalyzer(SignalAnalyzerInterface):
     def is_available(self):
         """Returns True if initialized and ready to make measurements, otherwise returns False."""
         return self._is_available
+
+    @property
+    def plugin_version(self):
+        """Returns the current version of scos-usrp"""
+        return self._plugin_version
 
     @property
     def sample_rate(self):
