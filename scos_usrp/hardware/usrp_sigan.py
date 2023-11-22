@@ -16,6 +16,7 @@ import logging
 import numpy as np
 from scos_actions import utils
 from scos_actions.calibration import sensor_calibration, sigan_calibration
+from scos_actions.capabilities import capabilities
 from scos_actions.hardware.sigan_iface import SignalAnalyzerInterface
 
 from scos_usrp import __version__ as SCOS_USRP_VERSION
@@ -85,8 +86,16 @@ class USRPSignalAnalyzer(SignalAnalyzerInterface):
                 return False
 
             usrp_args = (
-                f"type=b200,{settings.USRP_CONNECTION_ARGS}"  # find any b-series device
+                f"{settings.USRP_CONNECTION_ARGS}"
             )
+
+            sigan_spec = capabilities["sensor"]["signal_analyzer"]["sigan_spec"]
+            if "usrpargs" in sigan_spec.keys():
+                usrp_args = (
+                    f"{usrp_args},{sigan_spec.usrpargs}"
+                )
+                pass
+            
             logger.debug(f"usrp_args = {usrp_args}")
 
             try:
@@ -98,6 +107,10 @@ class USRPSignalAnalyzer(SignalAnalyzerInterface):
 
             logger.debug("Using the following USRP:")
             logger.debug(self.usrp.get_pp_string())
+
+            if "antenna" in sigan_spec.keys():
+                self.usrp.set_rx_antenna(sigan_spec.antenna)
+                pass
 
             try:
                 self._is_available = True
