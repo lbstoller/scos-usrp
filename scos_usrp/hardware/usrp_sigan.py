@@ -109,7 +109,7 @@ class USRPSignalAnalyzer(SignalAnalyzerInterface):
             logger.debug(self.usrp.get_pp_string())
 
             if "antenna" in sigan_spec.keys():
-                self.usrp.set_rx_antenna(sigan_spec.antenna)
+                self.usrp.set_rx_antenna(sigan_spec['antenna'])
                 pass
 
             try:
