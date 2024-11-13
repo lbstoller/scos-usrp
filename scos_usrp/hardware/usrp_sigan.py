@@ -92,7 +92,7 @@ class USRPSignalAnalyzer(SignalAnalyzerInterface):
             sigan_spec = capabilities["sensor"]["signal_analyzer"]["sigan_spec"]
             if "usrpargs" in sigan_spec.keys():
                 usrp_args = (
-                    f"{usrp_args},{sigan_spec.usrpargs}"
+                    f"{usrp_args},{sigan_spec['usrpargs']}"
                 )
                 pass
             
